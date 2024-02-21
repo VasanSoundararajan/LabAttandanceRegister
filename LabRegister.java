@@ -59,59 +59,60 @@ public class LabRegister extends JFrame {
         reset = new JButton("Reset");
 
         submit.addActionListener(e -> {
-            // if (nameField.getText().equals("") || systemField.getText().equals("") ||
-            // regField.getText().equals("") || labChoice.getSelectedItem().equals("--")
-            // || yearChoice.getSelectedItem().equals("--") ||
-            // sectionChoice.getSelectedItem().equals("--"))
-            // JOptionPane.showMessageDialog(this, "Enter the Fields", "Fill",
-            // JOptionPane.WARNING_MESSAGE);
-            // else {
-            // try {
-            // Class.forName("com.mysql.cj.jdbc.Driver");
-            // sqlcon = DriverManager.getConnection(dbcon, user, pass);
-            // sqlcon.prepareStatement("CREATE DATABASE lab_db");
-            // sqlcon.prepareStatement("USE lab_db");
-            // sqlcon.prepareStatement(
-            // "CREATE TABLE register (Reg integer NOT NULL UNIQUE, Syste varchar(20) NOT
-            // NULL, yer int not null, sec char(3))");
-            // sqlcon.prepareStatement("USE lab_db");
-            // st = sqlcon.prepareStatement("insert into register "
-            // + "values(?,?,?,?)");
+            if (nameField.getText().equals("") || systemField.getText().equals("") ||
+                    regField.getText().equals("") || labChoice.getSelectedItem().equals("--")
+                    || yearChoice.getSelectedItem().equals("--") ||
+                    sectionChoice.getSelectedItem().equals("--"))
+                JOptionPane.showMessageDialog(this, "Enter the Fields", "Fill",
+                        JOptionPane.WARNING_MESSAGE);
+            else {
+                try {
+                    Class.forName("com.mysql.cj.jdbc.Driver");
+                    sqlcon = DriverManager.getConnection(dbcon, user, pass);
+                    sqlcon.prepareStatement("CREATE DATABASE lab_db");
+                    sqlcon.prepareStatement("USE lab_db");
+                    sqlcon.prepareStatement("CREATE TABLE register (Reg integer NOT NULL UNIQUE, Syste varchar(20) NOT"
+                            + "NULL, yer int not null, sec char(3))");
+                    sqlcon.prepareStatement("USE lab_db");
+                    st = sqlcon.prepareStatement("insert into register "
+                            + "values(?,?,?,?)");
 
-            // st.setString(1, regField.getText());
-            // st.setString(2, systemField.getText());
-            // st.setString(3, Integer.toString(yearChoice.getSelectedIndex()));
-            // st.setString(4, Integer.toString(sectionChoice.getSelectedIndex()));
+                    st.setString(1, regField.getText());
+                    st.setString(2, systemField.getText());
+                    st.setString(3, (String) yearChoice.getSelectedItem());
+                    st.setString(4, (String) labChoice.getSelectedItem());
 
-            // int result = JOptionPane.showConfirmDialog(this, "CONFRIM YOU WANT TO SAVE",
-            // "SAVE",
-            // JOptionPane.YES_NO_OPTION);
-            // if (result == JOptionPane.YES_OPTION) {
-            // st.executeUpdate();
-            // JOptionPane.showMessageDialog(this, "RECORDED SUCESSFULLY", "SAVED",
-            // JOptionPane.INFORMATION_MESSAGE);
-            // nameField.setText("");
-            // systemField.setText("");
-            // regField.setText("");
+                    int result = JOptionPane.showConfirmDialog(this, "CONFRIM YOU WANT TO SAVE",
+                            "SAVE",
+                            JOptionPane.YES_NO_OPTION);
+                    if (result == JOptionPane.YES_OPTION) {
+                        st.executeUpdate();
+                        JOptionPane.showMessageDialog(this, "RECORDED SUCESSFULLY", "SAVED",
+                                JOptionPane.INFORMATION_MESSAGE);
+                        nameField.setText("");
+                        systemField.setText("");
+                        regField.setText("");
 
-            // labChoice.setSelectedIndex(0);
-            // sectionChoice.setSelectedIndex(0);
-            // yearChoice.setSelectedIndex(0);
-            // }
-            // } catch (SQLException ex) {
-            // if (ex.getSQLState().equals("HYOOO") && ex.getErrorCode() == 1007)
-            // return;
-            // JOptionPane.showMessageDialog(this, "ERROR IN SQL" + e, "ERROR",
-            // JOptionPane.ERROR_MESSAGE);
-            // } catch (ClassNotFoundException ex) {
-            // JOptionPane.showMessageDialog(this, "CLASS NOT FOUND", "ERROR",
-            // JOptionPane.ERROR_MESSAGE);
-            // }
-            // }
-            System.out.println(nameField.getText() + "\n" + regField.getText() + "\n" + systemField.getText() + "\n"
-                    + (String) yearChoice.getSelectedItem() + "\n" + (String) Schoice.getSelectedItem() + "\n"
-                    + (String) sectionChoice.getSelectedItem() + "\n" +
-                    (String) labChoice.getSelectedItem());
+                        labChoice.setSelectedIndex(0);
+                        sectionChoice.setSelectedIndex(0);
+                        yearChoice.setSelectedIndex(0);
+                    }
+                } catch (SQLException ex) {
+                    if (ex.getSQLState().equals("HYOOO") && ex.getErrorCode() == 1007)
+                        return;
+                    JOptionPane.showMessageDialog(this, "ERROR IN SQL" + e, "ERROR",
+                            JOptionPane.ERROR_MESSAGE);
+                } catch (ClassNotFoundException ex) {
+                    JOptionPane.showMessageDialog(this, "CLASS NOT FOUND", "ERROR",
+                            JOptionPane.ERROR_MESSAGE);
+                }
+            }
+            // System.out.println(nameField.getText() + "\n" + regField.getText() + "\n" +
+            // systemField.getText() + "\n"
+            // + (String) yearChoice.getSelectedItem() + "\n" + (String)
+            // Schoice.getSelectedItem() + "\n"
+            // + (String) sectionChoice.getSelectedItem() + "\n" +
+            // (String) labChoice.getSelectedItem());
 
         });
 
