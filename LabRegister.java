@@ -5,13 +5,14 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.time.LocalDate;
 
 public class LabRegister extends JFrame {
 
     // Declare the components
-    JLabel nameLabel, regLabel, labLabel, yearLabel, sectionLabel, systemLabel, Slabel;
-    JTextField nameField, regField, systemField, Sfeild;
-    JComboBox<String> labChoice, yearChoice, sectionChoice, Schoice;
+    JLabel nameLabel, regLabel, dateLabel, yearLabel, sectionLabel, systemLabel, Slabel;
+    JTextField nameField, regField, systemField, Sfeild, dateFeild;
+    JComboBox<String> yearChoice, sectionChoice, Schoice;
     JButton submit, reset;
     private static final String user = "root";
     private static final String pass = "0221";
@@ -25,20 +26,16 @@ public class LabRegister extends JFrame {
 
         nameLabel = new JLabel("Name: ");
         regLabel = new JLabel("Register Number: ");
-        labLabel = new JLabel("Lab: ");
+        dateLabel = new JLabel("Date ");
         yearLabel = new JLabel("Year: ");
         sectionLabel = new JLabel("Section: ");
         systemLabel = new JLabel("System Number: ");
         Slabel = new JLabel("Session");
 
+        dateFeild = new JTextField(20);
         nameField = new JTextField(20);
         regField = new JTextField(10);
         systemField = new JTextField(10);
-        labChoice = new JComboBox<>();
-        labChoice.addItem("--");
-        labChoice.addItem("Lab 1");
-        labChoice.addItem("Lab 2");
-        labChoice.addItem("Lab 3");
 
         String[] years = new String[21];
         years[0] = "--";
@@ -55,13 +52,14 @@ public class LabRegister extends JFrame {
         String[] sections = { "--", "A", "B", "C" };
         sectionChoice = new JComboBox<>(sections);
 
+        dateFeild.setText(LocalDate.now().toString());
+        dateFeild.setEditable(false);
         submit = new JButton("Submit");
         reset = new JButton("Reset");
 
         submit.addActionListener(e -> {
             if (nameField.getText().equals("") || systemField.getText().equals("") ||
-                    regField.getText().equals("") || labChoice.getSelectedItem().equals("--")
-                    || yearChoice.getSelectedItem().equals("--") ||
+                    regField.getText().equals("") || yearChoice.getSelectedItem().equals("--") ||
                     sectionChoice.getSelectedItem().equals("--"))
                 JOptionPane.showMessageDialog(this, "Enter the Fields", "Fill",
                         JOptionPane.WARNING_MESSAGE);
@@ -69,18 +67,18 @@ public class LabRegister extends JFrame {
                 try {
                     Class.forName("com.mysql.cj.jdbc.Driver");
                     sqlcon = DriverManager.getConnection(dbcon, user, pass);
-                    sqlcon.prepareStatement("CREATE DATABASE lab_db");
-                    sqlcon.prepareStatement("USE lab_db");
+                    sqlcon.prepareStatement("CREATE DATABASE labattandance");
+                    sqlcon.prepareStatement("USE labattandance");
                     sqlcon.prepareStatement("CREATE TABLE register (Reg integer NOT NULL UNIQUE, Syste varchar(20) NOT"
-                            + "NULL, yer int not null, sec char(3))");
+                            + "NULL, year int not null, sec char(3), Session  varchar(10))");
                     sqlcon.prepareStatement("USE lab_db");
                     st = sqlcon.prepareStatement("insert into register "
-                            + "values(?,?,?,?)");
+                            + "values(?,?,?,?, ?)");
 
                     st.setString(1, regField.getText());
                     st.setString(2, systemField.getText());
                     st.setString(3, (String) yearChoice.getSelectedItem());
-                    st.setString(4, (String) labChoice.getSelectedItem());
+                    st.setString(4, dateFeild.getText());
 
                     int result = JOptionPane.showConfirmDialog(this, "CONFRIM YOU WANT TO SAVE",
                             "SAVE",
@@ -93,7 +91,7 @@ public class LabRegister extends JFrame {
                         systemField.setText("");
                         regField.setText("");
 
-                        labChoice.setSelectedIndex(0);
+                        // labChoice.setSelectedIndex(0);
                         sectionChoice.setSelectedIndex(0);
                         yearChoice.setSelectedIndex(0);
                     }
@@ -120,7 +118,6 @@ public class LabRegister extends JFrame {
             nameField.setText("");
             regField.setText("");
             Schoice.setSelectedIndex(0);
-            labChoice.setSelectedIndex(0);
             yearChoice.setSelectedIndex(0);
             sectionChoice.setSelectedIndex(0);
             systemField.setText("");
@@ -132,8 +129,8 @@ public class LabRegister extends JFrame {
         add(nameField);
         add(regLabel);
         add(regField);
-        add(labLabel);
-        add(labChoice);
+        add(dateLabel);
+        add(dateFeild);
         add(yearLabel);
         add(yearChoice);
         add(sectionLabel);
