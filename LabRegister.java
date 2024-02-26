@@ -1,6 +1,5 @@
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.*;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -69,8 +68,8 @@ public class LabRegister extends JFrame {
                     sqlcon = DriverManager.getConnection(dbcon, user, pass);
                     sqlcon.prepareStatement("CREATE DATABASE labattandance");
                     sqlcon.prepareStatement("USE labattandance");
-                    sqlcon.prepareStatement("CREATE TABLE register (Reg integer NOT NULL UNIQUE, Syste varchar(20) NOT"
-                            + "NULL, year int not null, sec char(3), Session  varchar(10))");
+                    sqlcon.prepareStatement(
+                            "CREATE TABLE register (Reg integer NOT NULL UNIQUE, Syste varchar(20) NOT NULL, year int not null, sec char(3), Session  varchar(10))");
                     sqlcon.prepareStatement("USE lab_db");
                     st = sqlcon.prepareStatement("insert into register "
                             + "values(?,?,?,?, ?)");
